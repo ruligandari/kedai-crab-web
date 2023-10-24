@@ -3,6 +3,7 @@
 namespace App\Controllers\Api;
 
 use App\Controllers\BaseController;
+use App\Models\BankModel;
 use App\Models\KeranjangModel;
 use App\Models\MakananModel;
 use App\Models\OrderModel;
@@ -92,11 +93,13 @@ class TransaksiController extends BaseController
         $status = $this->request->getVar('status');
         $total = $this->request->getVar('total');
 
+
         $transaksi = new TransaksiModel();
         $user = new UserModel();
         $keranjang = new KeranjangModel();
         $orders = new OrderModel();
         $makanan = new MakananModel();
+        $bank = new BankModel();
 
         // switch status
         switch ($status) {
@@ -169,6 +172,9 @@ class TransaksiController extends BaseController
         ];
         try {
             $transaksi->insert($dataTransaksi);
+            if ($status == 'Dilevery') {
+                $bank->where('id', '1')->set('saldo', "saldo - $total", false)->update();
+            }
         } catch (Exception $e) {
             return $this->fail("Gagal Menambahkan Data", 400);
         }
@@ -181,10 +187,12 @@ class TransaksiController extends BaseController
         } catch (\Throwable $th) {
             return $this->fail("Gagal Menghapus Data Keranjang", 400);
         }
-
+        // mendapatkan saldo dari model bank
+        $sisa_saldo = $bank->where('id', 1)->select('saldo')->first();
         $data = [
             'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
             'qrcode' => generateQrCode(base64_encode(generateNoTransaksi($tahun))),
+            'saldo' => $sisa_saldo['saldo']
         ];
 
 

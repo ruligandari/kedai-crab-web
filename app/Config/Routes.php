@@ -95,6 +95,7 @@ $routes->group('api', ['filter' => 'jwtfilter'], function ($routes) {
     $routes->get('keranjang/(:any)', 'Api\KeranjangController::getKeranjang/$1');
     $routes->post('keranjang/update', 'Api\KeranjangController::updateKeranjang');
     $routes->delete('keranjang/(:any)', 'Api\KeranjangController::delete/$1');
+    $routes->get('bank', 'Api\BankController::index');
 });
 /*
  * --------------------------------------------------------------------
