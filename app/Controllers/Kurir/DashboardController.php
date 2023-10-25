@@ -12,6 +12,7 @@ class DashboardController extends BaseController
     public function index()
     {
         $transaksiModel = new TransaksiModel();
+        // tampilkan data transaksi dengan status dilevery, dan status pesanan diproses dan selesai
         $transaksi = $transaksiModel->where('status', 'Dilevery')->orderBy('id', 'DESC')->findAll();
         $data = [
             'title' => 'Pesan Antar',

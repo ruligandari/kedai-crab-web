@@ -189,16 +189,19 @@ class TransaksiController extends BaseController
         }
         // mendapatkan saldo dari model bank
         $sisa_saldo = $bank->where('id', 1)->select('saldo')->first();
+        // cari id terakhir dari $transaksi
+        $id_transaksi = $transaksi->select('id')->orderBy('id', 'DESC')->first();
+        $getQr = $transaksi->where('id', $id_transaksi['id'])->select('qr_code')->first();
         if ($status == 'Dilevery') {
             $data = [
                 'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
                 'saldo' => $sisa_saldo['saldo'],
-                'qrcode' => generateQrCode(base64_encode(generateNoTransaksi($tahun))),
+                'qrcode' => $getQr['qr_code']
             ];
         } else {
             $data = [
                 'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
-                'qrcode' => generateQrCode(base64_encode(generateNoTransaksi($tahun))),
+                'qrcode' => $getQr['qr_code']
             ];
         }
 
