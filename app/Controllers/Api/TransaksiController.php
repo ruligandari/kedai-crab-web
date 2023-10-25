@@ -212,7 +212,9 @@ class TransaksiController extends BaseController
         $user = new UserModel();
         $getNamaUser = $user->find($id);
         if ($getNamaUser) {
-            $getDataOrder = $transaksi->where('nama_pembeli', $getNamaUser['nama'])->findAll();
+            // urutan dsc
+
+            $getDataOrder = $transaksi->where('nama_pembeli', $getNamaUser['nama'])->orderBy('id', 'DESC')->findAll();
             return $this->respond($getDataOrder, 200);
         } else {
             return $this->fail("Belum Ada Transaksi", 400);
