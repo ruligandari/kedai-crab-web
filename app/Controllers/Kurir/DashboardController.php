@@ -12,7 +12,7 @@ class DashboardController extends BaseController
     public function index()
     {
         $transaksiModel = new TransaksiModel();
-        $transaksi = $transaksiModel->where('status', 'Dilevery')->findAll();
+        $transaksi = $transaksiModel->where('status', 'Dilevery')->orderBy('id', 'DESC')->findAll();
         $data = [
             'title' => 'Pesan Antar',
             'transaksi' => $transaksi
