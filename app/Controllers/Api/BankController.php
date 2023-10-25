@@ -18,7 +18,7 @@ class BankController extends BaseController
         $dataResponse = [
             'status' => 200,
             'message' => 'success',
-            'data' => $getRekening
+            'data' => $getRekening[0]
         ];
 
         return $this->respond($dataResponse, 200);
