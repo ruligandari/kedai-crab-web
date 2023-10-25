@@ -215,6 +215,11 @@ class TransaksiController extends BaseController
             // urutan dsc
 
             $getDataOrder = $transaksi->where('nama_pembeli', $getNamaUser['nama'])->orderBy('id', 'DESC')->findAll();
+            // menambahkan data nama user ke $getDataOrder
+            foreach ($getDataOrder as $key => $value) {
+                // mendapatkan no_transaksi, kemudian enkripsi dengan base 64, menambahkan key baru dengan nama encode
+                $getDataOrder[$key]['encode'] = base64_encode($value['no_transaksi']);
+            }
             return $this->respond($getDataOrder, 200);
         } else {
             return $this->fail("Belum Ada Transaksi", 400);
