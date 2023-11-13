@@ -31,35 +31,26 @@
                         <div class="card-body">
                             <h5 class="card-title">Pesan Antar</h5>
                             <table class="table" id="table-transaksi">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Nama Pembeli</th>
-                                        <th scope="col">Nomor Order</th>
-                                        <th scope="col">Total Harga</th>
-                                        <th scope="col">Jenis Pesanan</th>
-                                        <th scope="col">Status Pesanan</th>
-                                        <th scope="col">Tgl</th>
-                                        <th scope="col">Aksi</th>
-                                    </tr>
-                                </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
                                     <?php foreach ($transaksi as $item) : ?>
-                                        <tr>
-                                            <th scope="row"><?= $no++ ?></th>
-                                            <td><?= $item['nama_pembeli'] ?></td>
-                                            <td><?= $item['no_order'] ?></td>
-                                            <td><?= $item['total_harga'] ?></td>
-                                            <td><?= $item['status'] ?></td>
-                                            <td><span class="badge bg-success text-light"><?= $item['status_pesanan'] ?></span></td>
-                                            <td><?= $item['tgl_transaksi'] ?></td>
-                                            <td>
-                                                <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#antar-pesanan" onClick="getOrder('<?= $item['no_order'] ?>', '<?= $item['nama_pembeli'] ?>' ,'<?= $item['id'] ?>')">
-                                                    <i class="bi bi-truck"></i>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="col d-flex justify-content-between m-2">
+                                                    <h5 class="card-title"><?= $item['nama_pembeli'] ?></h5>
+                                                    <span class="badge bg-success my-4"><i class="bi bi-check-circle me-1"></i> <?= $item['status_pesanan'] ?></span>
+                                                </div>
+                                                <p class="card-text">No. Transaksi: <?= $item['no_transaksi'] ?></p>
+                                                <p class="card-text">Total: Rp. <?= number_format($item['total_harga'], 0, ',', '.') ?></p>
+                                                <p class="text-right"><?= $item['tgl_transaksi'] ?></p>
+                                                <div class="d-grid gap-2 mt-3">
+                                                    <button type="button" class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#antar-pesanan" onClick="getOrder('<?= $item['no_order'] ?>', '<?= $item['nama_pembeli'] ?>' ,'<?= $item['id'] ?>')">
+                                                        <i class="bi bi-truck"></i> Detail Pengantaran
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
                                     <?php endforeach ?>
                                 </tbody>
                             </table>

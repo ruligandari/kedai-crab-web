@@ -114,11 +114,18 @@
         </a>
       </li>
       <!-- End Dashboard Nav -->
-      <li class="nav-heading">Manajemen User</li>
+      <li class="nav-heading">Manajemen Admin</li>
       <li class="nav-item">
         <a class="nav-link <?= ($title == 'List User') ? '' : 'collapsed' ?>" href="<?= base_url('pemilik/list-user') ?>">
+          <i class="bi bi-person"></i>
+          <span>List Admin</span>
+        </a>
+      </li>
+      <li class="nav-heading">Manajemen User</li>
+      <li class="nav-item">
+        <a class="nav-link <?= ($title == 'List Customer') ? '' : 'collapsed' ?>" href="<?= base_url('pemilik/list-customer') ?>">
           <i class="bi bi-person-lines-fill"></i>
-          <span>List User</span>
+          <span>List Customer</span>
         </a>
       </li>
       <!-- End Dashboard Nav -->

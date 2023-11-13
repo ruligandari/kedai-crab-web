@@ -80,4 +80,16 @@ class ListUserController extends BaseController
 
         return redirect()->to(base_url('pemilik/list-user'))->with('success', 'User berhasil diupdate');
     }
+
+    public function customer()
+    {
+        $customer = new \App\Models\UserModel();
+        $customers = $customer->findAll();
+        $data = [
+            'title' => 'List Customer',
+            'customer' => $customers,
+        ];
+
+        return view('pemilik/customer/index', $data);
+    }
 }

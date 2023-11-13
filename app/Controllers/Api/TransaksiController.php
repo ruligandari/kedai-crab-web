@@ -25,7 +25,7 @@ class TransaksiController extends BaseController
         $request = service('request');
         helper('transaksi');
         $tahun = date('Y');
-        $noTransaksi = generateNoTransaksi($tahun);
+        $noTransaksi = generateNoTransaksi();
         $enkripsiNoTransaksi = base64_encode($noTransaksi);
         helper('qrcode');
         helper('order');
@@ -85,6 +85,7 @@ class TransaksiController extends BaseController
 
     public function addTransaksi()
     {
+        date_default_timezone_set('Asia/Jakarta'); // Set zona waktu ke Asia/Jakarta
         helper('qrcode');
         helper('order');
         helper('transaksi');
@@ -161,14 +162,14 @@ class TransaksiController extends BaseController
 
         // insert data ke tabel transaksi
         $dataTransaksi = [
-            'no_transaksi' => generateNoTransaksi($tahun),
+            'no_transaksi' => generateNoTransaksi(),
             'no_order' => $no_order,
             'nama_pembeli' => $user->find($idUser)['nama'],
             'total_harga' => $total,
             'tgl_transaksi' => date('Y-m-d H:i:s'),
             'status' => $status,
             'status_pesanan' => 'Pesanan Berhasil',
-            'qr_code' => generateQrCode(base64_encode(generateNoTransaksi($tahun)))
+            'qr_code' => generateQrCode(base64_encode(generateNoTransaksi()))
         ];
         try {
             $transaksi->insert($dataTransaksi);

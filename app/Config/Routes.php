@@ -61,6 +61,7 @@ $routes->group('pemilik', ['filter' => 'role'], static function ($routes) {
     $routes->get('list-menu', 'Pemilik\ListMenuController::index');
     $routes->get('list-transaksi', 'Pemilik\ListTransaksiController::index');
     $routes->get('list-user', 'Pemilik\ListUserController::index');
+    $routes->get('list-customer', 'Pemilik\ListUserController::customer');
     $routes->get('tambah-user', 'Pemilik\ListUserController::create');
     $routes->post('add', 'Pemilik\ListUserController::add');
     $routes->post('delete-user', 'Pemilik\ListUserController::delete');

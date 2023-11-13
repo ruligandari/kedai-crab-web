@@ -1,6 +1,10 @@
 <?= $this->extend('layouts/pemilik/main-layouts'); ?>
 
 <?= $this->section('head'); ?>
+<!-- Datatables -->
+<link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+<link rel="stylesheet" href="https://cdn.datatables.net/datetime/1.5.1/css/dataTables.dateTime.min.css">
 
 <?= $this->endSection(); ?>
 
@@ -30,32 +34,57 @@
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Transaksi</h5>
+                            <table border="0" cellspacing="5" cellpadding="5">
+                                <tbody>
+                                    <tr>
+                                        <td>Tanggal Awal:</td>
+                                        <td><input type="text" id="min" name="min"></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tanggal Akhir:</td>
+                                        <td><input type="text" id="max" name="max"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <br>
                             <table class="table" id="table-transaksi">
                                 <thead>
                                     <tr>
                                         <th scope="col">#</th>
                                         <th scope="col">Nama Pembeli</th>
-                                        <th scope="col">Nomor Order</th>
+                                        <th scope="col">Nomor Transaksi</th>
                                         <th scope="col">Total Harga</th>
                                         <th scope="col">Jenis Pesanan</th>
                                         <th scope="col">Status Pesanan</th>
                                         <th scope="col">Tgl</th>
+                                        <th scope="col">Waktu</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <?php $no = 1; ?>
-                                    <?php foreach ($transaksi as $item) : ?>
+                                    <?php foreach ($transaksi as $item) :
+                                        $tglWaktu = $item['tgl_transaksi'];
+                                        list($tanggal, $waktu) = explode(' ', $tglWaktu); ?>
                                         <tr>
                                             <th scope="row"><?= $no++ ?></th>
                                             <td><?= $item['nama_pembeli'] ?></td>
-                                            <td><?= $item['no_order'] ?></td>
-                                            <td><?= $item['total_harga'] ?></td>
+                                            <td><?= $item['no_transaksi'] ?></td>
+                                            <td><?= number_format($item['total_harga'], 0, ',', '.') ?></td>
                                             <td><?= $item['status'] ?></td>
                                             <td><span class="badge bg-success text-light"><?= $item['status_pesanan'] ?></span></td>
-                                            <td><?= $item['tgl_transaksi'] ?></td>
+                                            <td><?= $tanggal ?></td>
+                                            <td><?= $waktu ?></td>
                                         </tr>
                                     <?php endforeach ?>
                                 </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="2"></th>
+                                        <th>Total</th>
+                                        <th id="total"></th>
+                                        <th colspan="4"></th>
+                                    </tr>
+                                </tfoot>
                             </table>
                         </div>
 
@@ -85,17 +114,86 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.1/js/dataTables.dateTime.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.2/moment.min.js"></script>
 
 <script>
-    //    datatable dengan id table-transaksi, tambah script export ke excel
     $(document).ready(function() {
-        $('#table-transaksi').DataTable({
-            dom: 'lBfrtip',
-            buttons: [
-                'excel',
-                'pdf',
-            ]
+
+        let table, minDate, maxDate;
+
+        minDate = new DateTime('#min', {
+            format: 'YYYY-MM-DD'
         });
+
+        maxDate = new DateTime('#max', {
+            format: 'YYYY-MM-DD'
+        });
+        DataTable.ext.search.push(function(settings, data, dataIndex) {
+            let min = minDate.val();
+            let max = maxDate.val();
+            let date = new Date(data[6]);
+
+            if (
+                (min === null && max === null) ||
+                (min === null && date <= max) ||
+                (min <= date && max === null) ||
+                (min <= date && date <= max)
+            ) {
+                return true;
+            }
+            return false;
+        });
+
+        table = $('#table-transaksi').DataTable({
+            dom: 'lBfrtip',
+            buttons: [{
+                    extend: 'excelHtml5',
+                    footer: true,
+                    title: "List Transaksi -  <?= date('d-m-Y') ?>"
+
+                },
+                {
+                    extend: 'pdfHtml5',
+                    footer: true,
+                    title: "List Transaksi -  <?= date('d-m-Y') ?>"
+
+                }
+            ],
+        });
+
+        function totalHarga() {
+            let total = table.column(3, {
+                    search: 'applied'
+                })
+                .data()
+                .reduce(function(acc, value) {
+                    return acc + parseInt(value.replace(/\./g, ''), 10);
+                }, 0);
+
+            $('#total').html(new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 0
+            }).format(total));
+        }
+
+        document.querySelectorAll('#min, #max').forEach((el) => {
+            el.addEventListener('change', function() {
+                table.draw();
+                totalHarga();
+            });
+        });
+
+        // tambahkan kode pada saat search data menampilkam total harga
+        table.on('search.dt', function() {
+            totalHarga();
+        });
+
+        totalHarga();
+        // Move the buttons container to the dataTables_filter container
+        table.buttons().container().appendTo($('#table-transaksi_wrapper .dataTables_filter'));
+
     });
 </script>
 <?= $this->endSection(); ?>

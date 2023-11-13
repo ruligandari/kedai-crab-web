@@ -9,7 +9,7 @@ class ListTransaksiController extends BaseController
     public function index()
     {
         $transaksi = new \App\Models\TransaksiModel();
-        $transaksis = $transaksi->findAll();
+        $transaksis = $transaksi->orderBy('no_transaksi', 'DESC')->findAll();
         $data = [
             'title' => 'List Transaksi',
             'transaksi' => $transaksis,
