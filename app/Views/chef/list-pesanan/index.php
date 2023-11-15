@@ -31,7 +31,7 @@
                   <tr>
                     <th scope="col">#</th>
                     <th scope="col">Nama Pembeli</th>
-                    <th scope="col">Nomor Order</th>
+                    <th scope="col">Nomor Transaksi</th>
                     <th scope="col">Total Harga</th>
                     <th scope="col">Jenis Pesanan</th>
                     <th scope="col">Status Pesanan</th>
@@ -45,7 +45,7 @@
                     <tr>
                       <th scope="row"><?= $no++ ?></th>
                       <td><?= $item['nama_pembeli'] ?></td>
-                      <td><?= $item['no_order'] ?></td>
+                      <td><?= $item['no_transaksi'] ?></td>
                       <td><?= $item['total_harga'] ?></td>
                       <td><?= $item['status'] ?></td>
                       <td><span class="badge bg-success text-light"><?= $item['status_pesanan'] ?></span></td>

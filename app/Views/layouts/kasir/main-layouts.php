@@ -101,8 +101,14 @@
       <li class="nav-heading">Menu</li>
       <li class="nav-item">
         <a class="nav-link <?= ($title == 'Transaksi') ? '' : 'collapsed' ?>" href="<?= base_url('kasir/transaksi') ?>">
-          <i class="bi bi-menu-button-fill"></i>
+          <i class="bi bi-cart-plus"></i>
           <span>Transaksi</span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link <?= ($title == 'Delivery') ? '' : 'collapsed' ?>" href="<?= base_url('kasir/dilevery') ?>">
+          <i class="bi bi-truck"></i>
+          <span>Delivery</span>
         </a>
       </li>
       <!-- End Dashboard Nav -->

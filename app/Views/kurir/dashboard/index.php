@@ -32,26 +32,30 @@
                             <h5 class="card-title">Pesan Antar</h5>
                             <table class="table" id="table-transaksi">
                                 <tbody>
-                                    <?php $no = 1; ?>
-                                    <?php foreach ($transaksi as $item) : ?>
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <div class="col d-flex justify-content-between m-2">
-                                                    <h5 class="card-title"><?= $item['nama_pembeli'] ?></h5>
-                                                    <span class="badge bg-success my-4"><i class="bi bi-check-circle me-1"></i> <?= $item['status_pesanan'] ?></span>
-                                                </div>
-                                                <p class="card-text">No. Transaksi: <?= $item['no_transaksi'] ?></p>
-                                                <p class="card-text">Total: Rp. <?= number_format($item['total_harga'], 0, ',', '.') ?></p>
-                                                <p class="text-right"><?= $item['tgl_transaksi'] ?></p>
-                                                <div class="d-grid gap-2 mt-3">
-                                                    <button type="button" class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#antar-pesanan" onClick="getOrder('<?= $item['no_order'] ?>', '<?= $item['nama_pembeli'] ?>' ,'<?= $item['id'] ?>')">
-                                                        <i class="bi bi-truck"></i> Detail Pengantaran
-                                                    </button>
-                                                </div>
+                                    <?php if (isset($transaksi) && is_array($transaksi) && count($transaksi) > 0) : ?>
+                                        <?php $no = 1; ?>
+                                        <?php foreach ($transaksi as $item) : ?>
+                                            <div class="card">
+                                                <div class="card-body">
+                                                    <div class="col d-flex justify-content-between m-2">
+                                                        <h5 class="card-title"><?= $item['nama_pembeli'] ?></h5>
+                                                        <span class="badge bg-success my-4"><i class="bi bi-check-circle me-1"></i> <?= $item['status_pesanan'] ?></span>
+                                                    </div>
+                                                    <p class="card-text">No. Transaksi: <?= $item['no_transaksi'] ?></p>
+                                                    <p class="card-text">Total: Rp. <?= number_format($item['total_harga'], 0, ',', '.') ?></p>
+                                                    <p class="text-right"><?= $item['tgl_transaksi'] ?></p>
+                                                    <div class="d-grid gap-2 mt-3">
+                                                        <button type="button" class="btn btn-success btn-block" data-bs-toggle="modal" data-bs-target="#antar-pesanan" onClick="getOrder('<?= $item['no_order'] ?>', '<?= $item['nama_pembeli'] ?>' ,'<?= $item['id'] ?>')">
+                                                            <i class="bi bi-truck"></i> Detail Pengantaran
+                                                        </button>
+                                                    </div>
 
+                                                </div>
                                             </div>
-                                        </div>
-                                    <?php endforeach ?>
+                                        <?php endforeach ?>
+                                    <?php else : ?>
+                                        <p>Belum ada pesanan yang perlu diantarkan</p>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>

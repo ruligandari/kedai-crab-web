@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use LDAP\Result;
 
 class TransaksiModel extends Model
 {
@@ -56,5 +57,11 @@ class TransaksiModel extends Model
     {
         // buat relasi dengan tabel user dengan id untuk mendapatkan nama
 
+    }
+
+    public function getTransaksiWithKurir()
+    {
+        $result = $this->join('admin', 'admin.id = transaksi.kurir', 'left');
+        return $result->orderBy('transaksi.id', 'DESC')->where('status', 'Dilevery')->findAll();
     }
 }

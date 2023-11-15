@@ -54,6 +54,8 @@ $routes->group('kasir', ['filter' => 'role'],  static function ($routes) {
     $routes->get('transaksi', 'Kasir\TransaksiController::index');
     $routes->get('transaksi/(:any)', 'Kasir\TransaksiController::detail/$1');
     $routes->post('bayar', 'Kasir\TransaksiController::bayar');
+    $routes->get('dilevery', 'Kasir\DileveryController::index');
+    $routes->post('pilih-kurir', 'Kasir\DileveryController::pilihKurir');
 });
 
 $routes->group('pemilik', ['filter' => 'role'], static function ($routes) {

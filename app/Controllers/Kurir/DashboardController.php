@@ -13,7 +13,7 @@ class DashboardController extends BaseController
     {
         $transaksiModel = new TransaksiModel();
         // tampilkan data transaksi dengan status dilevery, dan status pesanan diproses dan selesai
-        $transaksi = $transaksiModel->where('status', 'Dilevery')->orderBy('id', 'DESC')->findAll();
+        $transaksi = $transaksiModel->where('status', 'Dilevery')->where('kurir', session()->get('id'))->orderBy('id', 'DESC')->findAll();
         $data = [
             'title' => 'Pesan Antar',
             'transaksi' => $transaksi
@@ -49,7 +49,7 @@ class DashboardController extends BaseController
         $id = $this->request->getPost('id');
 
         $data = [
-            'status_pesanan' => 'Selesai'
+            'status_pesanan' => 'Diantar'
         ];
 
         $transaksi->update($id, $data);
