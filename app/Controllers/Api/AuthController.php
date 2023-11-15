@@ -60,11 +60,12 @@ class AuthController extends BaseController
         // membuat logika register dengan rest api
         $password = $this->request->getVar('password');
         $confirm_password = $this->request->getVar('confirm_password');
+        $alamatLengkap = $this->request->getVar('alamat') . ', ' . $this->request->getVar('kecamatan') . ', ' . $this->request->getVar('kabupaten');
         $data = [
             'nama' => $this->request->getPost('nama'),
             'email' => $this->request->getPost('email'),
             'password' => password_hash($password, PASSWORD_DEFAULT),
-            'alamat' => $this->request->getPost('alamat'),
+            'alamat' => $alamatLengkap,
             'no_telp' => $this->request->getPost('no_telp'),
         ];
 
