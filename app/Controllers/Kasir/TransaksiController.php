@@ -24,7 +24,8 @@ class TransaksiController extends BaseController
         $modelTransaksi = new TransaksiModel();
 
         $decodeNoTransaksi = base64_decode($id);
-        $getTransaksi = $modelTransaksi->find($decodeNoTransaksi);
+
+        $getTransaksi = $modelTransaksi->where('no_transaksi', $decodeNoTransaksi)->first();
         $getID = $getTransaksi['id'];
         $noOrder = $getTransaksi['no_order'];
         $datasOrder = $modelTransaksi->getTransaksi($noOrder);
