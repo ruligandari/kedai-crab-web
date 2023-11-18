@@ -39,6 +39,7 @@ class BankController extends BaseController
             $dataResponse = [
                 'status' => 200,
                 'message' => 'success',
+                'alamat' => $alamat,
                 'ongkir' => $ongkir,
                 'data' => $getRekening[0]
             ];
