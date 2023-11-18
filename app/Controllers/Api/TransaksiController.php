@@ -160,9 +160,10 @@ class TransaksiController extends BaseController
             return $this->fail("Keranjang Kosong", 400);
         }
 
+        $no_transaksi = generateNoTransaksi();
         // insert data ke tabel transaksi
         $dataTransaksi = [
-            'no_transaksi' => generateNoTransaksi(),
+            'no_transaksi' => $no_transaksi,
             'no_order' => $no_order,
             'nama_pembeli' => $user->find($idUser)['nama'],
             'total_harga' => $total,
@@ -190,6 +191,7 @@ class TransaksiController extends BaseController
         }
         // mendapatkan saldo dari model bank
         $sisa_saldo = $bank->where('id', 1)->select('saldo')->first();
+        $encode = base64_encode($no_transaksi);
         // cari id terakhir dari $transaksi
         $id_transaksi = $transaksi->select('id')->orderBy('id', 'DESC')->first();
         $getQr = $transaksi->where('id', $id_transaksi['id'])->select('qr_code')->first();
@@ -197,12 +199,18 @@ class TransaksiController extends BaseController
             $data = [
                 'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
                 'saldo' => $sisa_saldo['saldo'],
-                'qrcode' => $getQr['qr_code']
+                'qrcode' => $getQr['qr_code'],
+                'no_order' => $no_order,
+                'encode' => $encode,
+                'total' => $total,
             ];
         } else {
             $data = [
                 'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
-                'qrcode' => $getQr['qr_code']
+                'qrcode' => $getQr['qr_code'],
+                'no_order' => $no_order,
+                'encode' => $encode,
+                'total' => $total,
             ];
         }
 
