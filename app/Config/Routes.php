@@ -89,6 +89,7 @@ $routes->group('api', ['filter' => 'jwtfilter'], function ($routes) {
     $routes->get('makanan', 'Api\MakananController::index');
     $routes->get('makanan/(:any)', 'Api\MakananController::detail/$1');
     $routes->post('transaksi', 'Api\TransaksiController::addTransaksi');
+    $routes->post('transaksi/update', 'Api\TransaksiController::updatePesanan');
     $routes->get('transaksi/(:any)', 'Api\TransaksiController::getTransaksiById/$1');
     $routes->post('order', 'Api\TransaksiController::detailOrder');
     $routes->get('user/(:any)', 'Api\UserController::getUser/$1');

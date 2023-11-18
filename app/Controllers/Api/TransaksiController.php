@@ -251,4 +251,40 @@ class TransaksiController extends BaseController
         ];
         return $this->respond($data, 200);
     }
+
+    public function updatePesanan()
+    {
+        $no_transaksiEncode = $this->request->getVar('no_transaksi');
+        $no_transaksi = base64_decode($no_transaksiEncode);
+
+        // cari tabel transaksi dengan no_transaksi
+        $transaksi = new TransaksiModel();
+        $getTransaksi = $transaksi->where('no_transaksi', $no_transaksi)->first();
+        if (!$getTransaksi) {
+            return $this->fail("Transaksi Tidak Ditemukan", 400);
+        }
+        // update status pesanan jika status = Dilevery
+        if ($getTransaksi['status'] == 'Dilevery') {
+            $data = [
+                'status_pesanan' => 'Selesai',
+            ];
+            try {
+                $transaksi->where('no_transaksi', $no_transaksi)->set($data)->update();
+                return $this->respond('Pesanan Berhasil Diterima', 200);
+            } catch (Exception $e) {
+                return $this->fail("Gagal Mengupdate Data", 400);
+            }
+        } else {
+
+            $data = [
+                'status_pesanan' => 'Diterima',
+            ];
+            try {
+                $transaksi->where('no_transaksi', $no_transaksi)->set($data)->update();
+                return $this->respond('Pesanan Berhasil Diterima', 200);
+            } catch (Exception $e) {
+                return $this->fail("Gagal Mengupdate Data", 400);
+            }
+        }
+    }
 }
