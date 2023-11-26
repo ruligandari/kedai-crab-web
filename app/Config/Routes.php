@@ -101,6 +101,12 @@ $routes->group('api', ['filter' => 'jwtfilter'], function ($routes) {
     $routes->delete('keranjang/(:any)', 'Api\KeranjangController::delete/$1');
     $routes->get('bank/(:any)', 'Api\BankController::index/$1');
 });
+
+
+// test base64
+
+$routes->get('test', 'TestController::index');
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
