@@ -82,7 +82,7 @@
             <div class="card-body">
               <h5 class="card-title">Selamat Datang</h5>
 
-              <p>Halo Selamat Datang Kasir</p>
+              <p>Halo Selamat Datang <?= session()->get('nama') ?></p>
               <br>
               <p>Selamat Beraktifitas</p>
 
