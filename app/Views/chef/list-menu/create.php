@@ -36,6 +36,8 @@
                   </div>
                   <label for="stok" class="mt-2">Stok</label>
                   <input type="text" name="stok" id="stok" class="form-control mt-2">
+                  <label for="stok" class="mt-2">Satuan</label>
+                  <input type="text" name="satuan" id="stok" class="form-control mt-2">
                   <label for="deskripsi" class="mt-2">Deskripsi</label>
                   <textarea type="text" name="deskripsi" id="deskripsi" class="form-control mt-2"></textarea>
                   <label for="foto" class="mt-2">Foto</label>
