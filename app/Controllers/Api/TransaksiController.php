@@ -189,21 +189,32 @@ class TransaksiController extends BaseController
         } catch (\Throwable $th) {
             return $this->fail("Gagal Menghapus Data Keranjang", 400);
         }
-        // mendapatkan saldo dari model bank
-        $sisa_saldo = $bank->where('id', 1)->select('saldo')->first();
+        
         $encode = base64_encode($no_transaksi);
+        
         // cari id terakhir dari $transaksi
-        $id_transaksi = $transaksi->select('id')->orderBy('id', 'DESC')->first();
-        $getQr = $transaksi->where('id', $id_transaksi['id'])->select('qr_code')->first();
+        try {
+            $id_transaksi = $transaksi->select('id')->orderBy('id', 'DESC')->first();
+            $getQr = $transaksi->where('id', $id_transaksi['id'])->select('qr_code')->first();
+        } catch (\Throwable $th) {
+            return $this->fail("Gagal Mengambil Data Transaksi", 400);
+        }
+        
         if ($status == 'Dilevery') {
-            $data = [
-                'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
-                'saldo' => $sisa_saldo['saldo'],
-                'qrcode' => $getQr['qr_code'],
-                'no_order' => $no_order,
-                'encode' => $encode,
-                'total' => $total,
-            ];
+            // mendapatkan saldo dari model bank hanya jika status Dilevery
+            try {
+                $sisa_saldo = $bank->where('id', 1)->select('saldo')->first();
+                $data = [
+                    'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",
+                    'saldo' => $sisa_saldo['saldo'],
+                    'qrcode' => $getQr['qr_code'],
+                    'no_order' => $no_order,
+                    'encode' => $encode,
+                    'total' => $total,
+                ];
+            } catch (\Throwable $th) {
+                return $this->fail("Gagal Mengambil Data Saldo Bank", 400);
+            }
         } else {
             $data = [
                 'messages' => "Transaksi Berhasil, Tunjukan QR Code ini ke Kasir",

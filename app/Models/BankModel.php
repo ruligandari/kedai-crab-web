@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class BankModel extends Model
 {
-    protected $DBGroup          = 'bank';
+    protected $DBGroup          = 'default';
     protected $table            = 'rekening';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
